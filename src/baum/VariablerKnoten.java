@@ -5,14 +5,20 @@ import java.util.TreeMap;
 
 import org.apache.lucene.document.Document;
 
-
+/**
+ * 
+ * @author Jan Hofmeier
+ *
+ * @param <T> String/Int
+ * @param <E> Enum das die moeglichen Attribute enthaelt.
+ */
 public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knoten<E>
 {
 
 	protected Ordner suchfeld;
 	private TreeMap<T, BaumTeil> kinder;
 
-	public VariablerKnoten(String name, BaumStruktur<E> struktur)
+	protected VariablerKnoten(String name, BaumStruktur<E> struktur)
 	{
 		super(name, struktur);
 		suchfeld = struktur.getSuchFeld();

@@ -3,6 +3,14 @@ package baum;
 
 import org.apache.lucene.document.Document;
 
+/**
+ * 
+ * @author Jan Hofmeier
+ *
+ * @param <E> Enum das moegliche Attribute enthaelt
+ * 
+ * Wrapper-Klasse des Baums, ermöglicht das veraendern und anlegen aus einem anderen Package heraus
+ */
 public class Gaertner<E extends Enum<E> & Ordner>
 {
 	final Knoten<E> root;

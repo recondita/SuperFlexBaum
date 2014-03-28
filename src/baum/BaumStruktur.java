@@ -8,7 +8,14 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-
+/**
+ * 
+ * @author Jan Hofmeier
+ *
+ * @param <E> Enum das die die moeglichen Attribute enthaelt.
+ * 
+ * Liest die Struktur des Baumes aus einer Datei um sie dem Baum zur verfügung zu stellen.
+ */
 public class BaumStruktur<E extends Enum<E> & Ordner>
 {
 
