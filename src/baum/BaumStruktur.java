@@ -17,6 +17,7 @@ public class BaumStruktur<E extends Enum<E> & Ordner>
 	private Enum<E> suchfeld;
 	private boolean expanded;
 	public final String name;
+	private Enum<E> valueField;
 
 	protected BaumStruktur(String name, BufferedReader struktur, boolean expanded, E value) throws IOException
 	{
@@ -41,6 +42,7 @@ public class BaumStruktur<E extends Enum<E> & Ordner>
 				if (temp && line.charAt(0) == '*')
 				{					
 					suchfeld = E.valueOf(value.getDeclaringClass(), expanded?line.substring(1,line.length()-1):line.substring(1));
+					valueField=value;
 					temp = false;
 				} else
 				{
@@ -101,7 +103,10 @@ public class BaumStruktur<E extends Enum<E> & Ordner>
 		return expanded;
 	}
 
-	
+	public Ordner getValueFlield()
+	{
+		return (Ordner) valueField;
+	}
 
 	public static class BaumConfigException extends Exception
 	{

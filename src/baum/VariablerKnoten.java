@@ -48,7 +48,7 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 						kinder.put(temp[i], weiter);
 					} else
 					{
-						kinder.put(temp[i], new Blatt(temp[i] + "", doc.get(((E) E.valueOf(null, "DATEINAME")).getFeld())));
+						kinder.put(temp[i], new Blatt(temp[i] + "", doc.get(struktur.getValueFlield().getFeld())));
 						ret = true;
 					}
 				} else
