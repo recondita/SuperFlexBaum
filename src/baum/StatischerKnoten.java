@@ -10,7 +10,9 @@ public class StatischerKnoten<E extends Enum<E> & Ordner> extends Knoten<E>
 	public StatischerKnoten(String name, BaumStruktur<E> struktur)
 	{
 		super(name, struktur);
-		kinder = new Knoten[struktur.kinder.length];
+		@SuppressWarnings("unchecked")
+		Knoten<E>[] kinder=(Knoten<E>[])new Knoten[struktur.kinder.length];
+		this.kinder =kinder; 
 		for (int i = 0; i < kinder.length; i++)
 		{
 			if (struktur.kinder[i].statisch)
