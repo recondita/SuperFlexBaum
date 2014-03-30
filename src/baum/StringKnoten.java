@@ -13,10 +13,7 @@ public class StringKnoten<E extends Enum<E>&Ordner> extends VariablerKnoten<Stri
 	@Override
 	protected String[] gebeFeld(Document doc)
 	{
-		String temp = doc.get(suchfeld.getFeld());
-		if (temp == null)
-			return null;
-		return temp.split(", ");
+		return doc.getValues(suchfeld.getFeld());
 	}
 
 }
