@@ -8,11 +8,13 @@ public abstract class Knoten<E extends Enum<E> & Ordner> extends BaumTeil
 {
 	
 	protected BaumStruktur<E> struktur;
+	private boolean ausgeklappt;
 	
 	public Knoten(String name, BaumStruktur<E> struktur)
 	{
 		super(name, false);
 		this.struktur=struktur;
+		this.ausgeklappt=struktur.isExpanded();
 	}
 
 
@@ -22,9 +24,14 @@ public abstract class Knoten<E extends Enum<E> & Ordner> extends BaumTeil
 
 	public boolean istAusgeklappt()
 	{		
-		return struktur.isExpanded();
+		return ausgeklappt;
 	}
 
+	public void setzteAusgekappt(boolean ausgeklappt)
+	{
+		this.ausgeklappt=ausgeklappt;
+	}
+	
 	protected abstract void remove(Document doc);
 	
 	public abstract boolean isEmpty();
