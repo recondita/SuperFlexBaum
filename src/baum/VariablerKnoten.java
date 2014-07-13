@@ -15,13 +15,15 @@ import org.apache.lucene.document.Document;
 public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knoten<E>
 {
 
-	protected Ordner suchfeld;
+	protected Ordner[] suchFelder;
+	protected int hauptSuchFeld;
 	private TreeMap<T, BaumTeil> kinder;
 
 	protected VariablerKnoten(String name, BaumStruktur<E> struktur)
 	{
 		super(name, struktur);
-		suchfeld = struktur.getSuchFeld();
+		suchFelder = struktur.getSuchFelder();
+		hauptSuchFeld=struktur.getHauptSuchFeld();
 		kinder = new TreeMap<T, BaumTeil>();
 	}
 
@@ -48,13 +50,14 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 					continue;
 				if (!kinder.containsKey(temp[i]))
 				{
+					String name=gebeName(doc,i);
 					if (struktur.kinder.length > 0)
 					{
-						weiter = machSubKnoten(temp[i]);
+						weiter = machSubKnoten(name);
 						kinder.put(temp[i], weiter);
 					} else
 					{
-						kinder.put(temp[i], new Blatt(temp[i] + "", doc.get(struktur.getValueFlield().getFeld())));
+						kinder.put(temp[i], new Blatt(name, doc.get(struktur.getValueFlield().getFeld())));
 						ret = true;
 					}
 				} else
@@ -74,11 +77,11 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 		return ret;
 	}
 
-	private Knoten<E> machSubKnoten(T name)
+	private Knoten<E> machSubKnoten(String name)
 	{
 		if (struktur.kinder[0].statisch)
 			return new StatischerKnoten<E>(name + "", struktur.kinder[0]);
-		else if (struktur.kinder[0].getSuchFeld().isInt())
+		else if (struktur.kinder[0].getSuchFelder()[0].isInt())
 			return new IntKnoten<E>(name + "", struktur.kinder[0]);
 		else
 			return new StringKnoten<E>(name + "", struktur.kinder[0]);
@@ -88,7 +91,7 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 	@Override
 	protected void remove(Document doc)
 	{
-		String temp = doc.get(suchfeld.getFeld());
+		String temp = doc.get(suchFelder[hauptSuchFeld].getFeld());
 		if (temp != null && temp.length() > 0 && !temp.equals("-1"))
 		{
 			String[] destlist = temp.split(", ");
@@ -123,7 +126,7 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 	@Override
 	public boolean contains(Document doc)
 	{
-		String temp = doc.get(suchfeld.getFeld());
+		String temp = doc.get(suchFelder[hauptSuchFeld].getFeld());
 		if (temp != null && temp.length() > 0 && !temp.equals("-1"))
 		{
 			String[] destlist = temp.split(", ");
@@ -151,5 +154,15 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 		return false;
 	}
 
+	protected String gebeName(Document doc, int nummer)
+	{
+		StringBuffer ret=new StringBuffer();
+		for(int i=0; i<suchFelder.length; i++)
+		{
+			ret.append(doc.getValues(suchFelder[i].getFeld())[(nummer==hauptSuchFeld)?nummer:0]);
+		}
+		return ret.toString();
+	}
+	
 	protected abstract T[] gebeFeld(Document doc);
 }

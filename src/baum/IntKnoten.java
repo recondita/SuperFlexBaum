@@ -14,7 +14,7 @@ public class IntKnoten<E extends Enum<E> &Ordner> extends VariablerKnoten<Intege
 	protected Integer[] gebeFeld(Document doc)
 	{
 
-		String[] tempa = doc.getValues(suchfeld.getFeld());
+		String[] tempa = doc.getValues(suchFelder[hauptSuchFeld].getFeld());
 		Integer[] i = new Integer[tempa.length];
 		for (int j = 0; j < i.length; j++)
 			try
