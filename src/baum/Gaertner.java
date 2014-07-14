@@ -19,10 +19,8 @@ public class Gaertner<E extends Enum<E> & Ordner>
 	{
 		if(struktur.statisch)
 			root=new StatischerKnoten<E>(struktur.name, struktur);
-		else if (struktur.getSuchFelder()[0].isInt())
-			root=new IntKnoten<E>(struktur.name, struktur);
-		else
-			root=new StringKnoten<E>(struktur.name, struktur);
+		else 
+			root=new VariablerKnoten<E>(struktur.name, struktur);
 		
 	}
 

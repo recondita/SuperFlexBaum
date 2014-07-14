@@ -12,19 +12,19 @@ import org.apache.lucene.document.Document;
  * @param <T> String/Int
  * @param <E> Enum das die moeglichen Attribute enthaelt.
  */
-public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knoten<E>
+public class VariablerKnoten<E extends Enum<E>&Ordner> extends Knoten<E>
 {
 
 	protected Ordner[] suchFelder;
 	protected int hauptSuchFeld;
-	private TreeMap<T, BaumTeil> kinder;
+	private TreeMap<String, BaumTeil> kinder;
 
 	protected VariablerKnoten(String name, BaumStruktur<E> struktur)
 	{
 		super(name, struktur);
 		suchFelder = struktur.getSuchFelder();
 		hauptSuchFeld=struktur.getHauptSuchFeld();
-		kinder = new TreeMap<T, BaumTeil>();
+		kinder = new TreeMap<String, BaumTeil>();
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 	@Override
 	protected boolean add(Document doc)
 	{
-		T[] temp = gebeFeld(doc);
+		String[] temp = gebeFeld(doc);
 		boolean ret = false;
 		if (temp != null)
 		{
@@ -81,11 +81,8 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 	{
 		if (struktur.kinder[0].statisch)
 			return new StatischerKnoten<E>(name + "", struktur.kinder[0]);
-		else if (struktur.kinder[0].getSuchFelder().length==1&&struktur.kinder[0].getSuchFelder()[0].isInt())
-			return new IntKnoten<E>(name + "", struktur.kinder[0]);
-		else
-			return new StringKnoten<E>(name + "", struktur.kinder[0]);
-
+		else 
+			return new VariablerKnoten<E>(name + "", struktur.kinder[0]);
 	}
 
 	@Override
@@ -165,5 +162,8 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 		return ret.toString();
 	}
 	
-	protected abstract T[] gebeFeld(Document doc);
+	protected String[] gebeFeld(Document doc)
+	{
+		return doc.getValues(suchFelder[hauptSuchFeld].getFeld());
+	}
 }

@@ -17,10 +17,8 @@ public class StatischerKnoten<E extends Enum<E> & Ordner> extends Knoten<E>
 		{
 			if (struktur.kinder[i].statisch)
 				kinder[i] = new StatischerKnoten<E>(struktur.kinder[i].name, struktur.kinder[i]);
-			else if (struktur.kinder[i].getSuchFelder()[0].isInt())
-				kinder[i] = new IntKnoten<E>(struktur.kinder[i].name, struktur.kinder[i]);
-			else
-				kinder[i] = new StringKnoten<E>(struktur.kinder[i].name, struktur.kinder[i]);
+			else 
+				kinder[i] = new VariablerKnoten<E>(struktur.kinder[i].name, struktur.kinder[i]);
 
 		}
 	}
