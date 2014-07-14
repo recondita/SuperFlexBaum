@@ -81,7 +81,7 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 	{
 		if (struktur.kinder[0].statisch)
 			return new StatischerKnoten<E>(name + "", struktur.kinder[0]);
-		else if (struktur.kinder[0].getSuchFelder()[0].isInt())
+		else if (struktur.kinder[0].getSuchFelder().length==1&&struktur.kinder[0].getSuchFelder()[0].isInt())
 			return new IntKnoten<E>(name + "", struktur.kinder[0]);
 		else
 			return new StringKnoten<E>(name + "", struktur.kinder[0]);
@@ -160,6 +160,7 @@ public abstract class VariablerKnoten<T, E extends Enum<E>&Ordner> extends Knote
 		for(int i=0; i<suchFelder.length; i++)
 		{
 			ret.append(doc.getValues(suchFelder[i].getFeld())[(nummer==hauptSuchFeld)?nummer:0]);
+			ret.append(" ");
 		}
 		return ret.toString();
 	}

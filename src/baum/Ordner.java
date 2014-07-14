@@ -14,6 +14,7 @@ public interface Ordner
 
 	public abstract boolean isInt();
 	
+	public abstract int maxStellen();
 
 
 }
