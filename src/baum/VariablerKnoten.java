@@ -1,6 +1,8 @@
 package baum;
 
+import java.text.Collator;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.TreeMap;
 
 import org.apache.lucene.document.Document;
@@ -24,7 +26,9 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 		super(name, struktur);
 		suchFelder = struktur.getSuchFelder();
 		hauptSuchFeld = struktur.getHauptSuchFeld();
-		kinder = new TreeMap<String, BaumTeil>();
+		Collator collator = Collator.getInstance(Locale.GERMAN);
+		collator.setStrength(Collator.SECONDARY);
+		kinder = new TreeMap<String, BaumTeil>(collator);
 	}
 
 	@Override
