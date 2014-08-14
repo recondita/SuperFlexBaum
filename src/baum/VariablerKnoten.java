@@ -50,10 +50,10 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 					//String name = gebeName(doc, i);
 					if (struktur.kinder.length > 0) {
 						weiter = machSubKnoten(temp[i]);
-						kinder.put(temp[i].toLowerCase().replaceAll((char)228+"", "a").replaceAll((char)246+"", "o").replaceAll((char)252+"", "u"), weiter);
+						kinder.put(temp[i].toLowerCase().replace((char)228, 'a').replace((char)246, 'o').replace((char)252, 'u'), weiter);
 					} else {
 						kinder.put(
-								temp[i].toLowerCase().replaceAll((char)228+"", "a").replaceAll((char)246+"", "o").replaceAll((char)252+"", "u"),
+								temp[i].toLowerCase().replace((char)228, 'a').replace((char)246, 'o').replace((char)252, 'u'),
 								new Blatt(temp[i], doc.get(struktur
 										.getValueFlield().getFeld())));
 						ret = true;
