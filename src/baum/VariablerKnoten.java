@@ -24,8 +24,8 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 		super(name, struktur);
 		suchFelder = struktur.getSuchFelder();
 		hauptSuchFeld = struktur.getHauptSuchFeld();
-		//Collator collator = Collator.getInstance(Locale.GERMAN);
-		//collator.setStrength(Collator.SECONDARY);
+		// Collator collator = Collator.getInstance(Locale.GERMAN);
+		// collator.setStrength(Collator.SECONDARY);
 		kinder = new TreeMap<String, BaumTeil>();
 	}
 
@@ -43,29 +43,29 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 		if (temp != null) {
 			// String[] destlist = temp.split(", ");
 			for (int i = 0; i < temp.length; i++) {
-				Knoten<E> weiter = null;
 				if (temp[i] == null)
 					continue;
-				if (!kinder.containsKey(temp[i])) {
-					//String name = gebeName(doc, i);
+				String keyStr = temp[i].toLowerCase().replace((char) 228, 'a')
+						.replace((char) 246, 'o').replace((char) 252, 'u');
+				BaumTeil weiter = kinder.get(keyStr);
+				if (weiter == null) {
+					// String name = gebeName(doc, i);
 					if (struktur.kinder.length > 0) {
 						weiter = machSubKnoten(temp[i]);
-						kinder.put(temp[i].toLowerCase().replace((char)228, 'a').replace((char)246, 'o').replace((char)252, 'u'), weiter);
+						kinder.put(keyStr, weiter);
 					} else {
 						kinder.put(
-								temp[i].toLowerCase().replace((char)228, 'a').replace((char)246, 'o').replace((char)252, 'u'),
+								keyStr,
 								new Blatt(temp[i], doc.get(struktur
 										.getValueFlield().getFeld())));
 						ret = true;
 					}
 				} else {
-					if (struktur.kinder.length > 0)
-						weiter = (Knoten<E>) kinder.get(temp[i]);
-					else
+					if (struktur.kinder.length == 0)
 						ret = false;
 				}
 				if (struktur.kinder.length > 0)
-					ret = weiter.add(doc) | ret;
+					ret = ((Knoten<E>) weiter).add(doc) | ret;
 
 			}
 
@@ -145,12 +145,11 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 
 	protected String[] gebeFeld(Document doc) {
 		String[] ret = doc.getValues(suchFelder[hauptSuchFeld].getFeld());
-		if (suchFelder.length == 1)
-		{
-			if(suchFelder[hauptSuchFeld].isInt())
-			{
-				for(int i=0; i<ret.length;i++)
-					ret[i]=vorLeer(ret[i],suchFelder[hauptSuchFeld].maxStellen());
+		if (suchFelder.length == 1) {
+			if (suchFelder[hauptSuchFeld].isInt()) {
+				for (int i = 0; i < ret.length; i++)
+					ret[i] = vorLeer(ret[i],
+							suchFelder[hauptSuchFeld].maxStellen());
 			}
 			return ret;
 		}
@@ -161,16 +160,17 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 			for (int i = 0; i < hauptSuchFeld; i++) {
 				String[] temp = doc.getValues(suchFelder[i].getFeld());
 				for (String val : temp) {
-					preSB.append(suchFelder[i].isInt()?vorLeer(val,suchFelder[i].maxStellen()):val);
+					preSB.append(suchFelder[i].isInt() ? vorLeer(val,
+							suchFelder[i].maxStellen()) : val);
 					preSB.append(" ");
 				}
 			}
 			pre = preSB.toString();
 		} else {
-			if(suchFelder[hauptSuchFeld].isInt())
-			{
-				for(int i=0; i<ret.length;i++)
-					ret[i]=vorLeer(ret[i],suchFelder[hauptSuchFeld].maxStellen());
+			if (suchFelder[hauptSuchFeld].isInt()) {
+				for (int i = 0; i < ret.length; i++)
+					ret[i] = vorLeer(ret[i],
+							suchFelder[hauptSuchFeld].maxStellen());
 			}
 			pre = "";
 		}
@@ -199,23 +199,20 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 				temp.append(" ");
 				temp.append(suff);
 			}
-			ret[i]=temp.toString();
+			ret[i] = temp.toString();
 		}
 		return ret;
 	}
-	
-	
-	protected String vorLeer(String str, int length)
-	{
-		if(str.length()==length)
+
+	protected String vorLeer(String str, int length) {
+		if (str.length() == length)
 			return str;
-		for(int i=0; i<str.length(); i++)
-			if(str.charAt(i)<0x30||str.charAt(i)>0x39)
+		for (int i = 0; i < str.length(); i++)
+			if (str.charAt(i) < 0x30 || str.charAt(i) > 0x39)
 				return str;
-		
-		StringBuffer ret=new StringBuffer();
-		for(int i=str.length(); i<length;i++)
-		{
+
+		StringBuffer ret = new StringBuffer();
+		for (int i = str.length(); i < length; i++) {
 			ret.append(" ");
 		}
 		ret.append(str);
