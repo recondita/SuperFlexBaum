@@ -1,6 +1,7 @@
 package baum;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 import org.apache.lucene.document.Document;
@@ -30,14 +31,14 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 	}
 
 	@Override
-	public BaumTeil[] gebeKinder() {
+	public synchronized BaumTeil[] gebeKinder() {
 		Collection<BaumTeil> temp = kinder.values();
 		return temp.toArray(new BaumTeil[temp.size()]);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected boolean add(Document doc) {
+	protected synchronized boolean add(Document doc) {
 		String[] temp = gebeFeld(doc);
 		boolean ret = false;
 		if (temp != null) {
@@ -82,7 +83,7 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 	}
 
 	@Override
-	protected void remove(Document doc) {
+	protected synchronized void remove(Document doc) {
 		String temp = doc.get(suchFelder[hauptSuchFeld].getFeld());
 		if (temp != null && temp.length() > 0 && !temp.equals("-1")) {
 			String[] destlist = temp.split(", ");
@@ -217,5 +218,19 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 		}
 		ret.append(str);
 		return ret.toString();
+	}
+
+	@Override
+	public void getFileStrings(HashSet<String> collector) {
+		BaumTeil[] arr;
+		synchronized (this) {
+			arr = new BaumTeil[kinder.size()];
+			kinder.values().toArray(arr);
+		}
+		for(BaumTeil kind: arr)
+		{
+			kind.getFileStrings(collector);
+		}
+		
 	}
 }

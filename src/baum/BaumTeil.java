@@ -1,5 +1,7 @@
 package baum;
 
+import java.util.HashSet;
+
 
 public abstract class BaumTeil
 {
@@ -11,6 +13,8 @@ public abstract class BaumTeil
 		this.isLeaf=isLeaf;
 		this.name=name;
 	}
+	
+	public abstract void getFileStrings(HashSet<String> collector);
 	
 	public BaumTeil[] gebeKinder()
 	{

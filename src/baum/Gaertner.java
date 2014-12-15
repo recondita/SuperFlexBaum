@@ -1,6 +1,8 @@
 package baum;
 
 
+import java.util.HashSet;
+
 import org.apache.lucene.document.Document;
 
 /**
@@ -44,5 +46,11 @@ public class Gaertner<E extends Enum<E> & Ordner>
 		return root.contains(doc);
 	}
 
+	public HashSet<String> getFileStrings()
+	{
+		HashSet<String> set=new HashSet<String>();
+		gebeWurzel().getFileStrings(set);
+		return set;
+	}
 
 }

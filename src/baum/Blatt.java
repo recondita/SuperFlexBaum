@@ -1,5 +1,7 @@
 package baum;
 
+import java.util.HashSet;
+
 
 public class Blatt extends BaumTeil
 {
@@ -8,6 +10,10 @@ public class Blatt extends BaumTeil
 	{
 		super(name,true);
 		this.fileName=fileName;
+	}
+	public void getFileStrings(HashSet<String> collector)
+	{
+		collector.add(getFileName());
 	}
 	
 	public String getFileName()

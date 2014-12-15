@@ -1,5 +1,7 @@
 package baum;
 
+import java.util.HashSet;
+
 import org.apache.lucene.document.Document;
 
 public class StatischerKnoten<E extends Enum<E> & Ordner> extends Knoten<E>
@@ -31,7 +33,14 @@ public class StatischerKnoten<E extends Enum<E> & Ordner> extends Knoten<E>
 		return kinder;
 	}
 
-
+	@Override
+	public void getFileStrings(HashSet<String> collector)
+	{
+		for(int i=0; i<kinder.length; i++)
+		{
+			kinder[i].getFileStrings(collector);
+		}
+	}
 
 	@Override
 	protected boolean add(Document doc)
