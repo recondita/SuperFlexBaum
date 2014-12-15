@@ -46,11 +46,12 @@ public class Gaertner<E extends Enum<E> & Ordner>
 		return root.contains(doc);
 	}
 
-	public HashSet<String> getFileStrings()
+	public String[] getFileStrings()
 	{
 		HashSet<String> set=new HashSet<String>();
 		gebeWurzel().getFileStrings(set);
-		return set;
+		String[] a=new String[set.size()];
+		return set.toArray(a);
 	}
 
 }
