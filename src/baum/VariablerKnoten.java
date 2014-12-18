@@ -1,6 +1,7 @@
 package baum;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.TreeMap;
 
@@ -27,6 +28,14 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 		hauptSuchFeld = struktur.getHauptSuchFeld();
 		// Collator collator = Collator.getInstance(Locale.GERMAN);
 		// collator.setStrength(Collator.SECONDARY);
+		if(suchFelder[hauptSuchFeld].absteigend())
+			kinder=new TreeMap<String, BaumTeil>(new Comparator<String>() {
+				@Override
+				public int compare(String o1, String o2) {
+					return -(o1.compareTo(o2));
+				}
+			});
+		else
 		kinder = new TreeMap<String, BaumTeil>();
 	}
 
