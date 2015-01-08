@@ -28,15 +28,41 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 		hauptSuchFeld = struktur.getHauptSuchFeld();
 		// Collator collator = Collator.getInstance(Locale.GERMAN);
 		// collator.setStrength(Collator.SECONDARY);
-		if(suchFelder[hauptSuchFeld].absteigend())
-			kinder=new TreeMap<String, BaumTeil>(new Comparator<String>() {
+		Comparator<String> comp=null;
+		if (suchFelder[hauptSuchFeld].absteigend()) {
+			if(struktur.kinder.length==0)
+			{
+			comp=new Comparator<String>() {
 				@Override
 				public int compare(String o1, String o2) {
-					return -(o1.compareTo(o2));
+					int i=-(o1.compareTo(o2));
+					return i==0?1:i;
 				}
-			});
-		else
-		kinder = new TreeMap<String, BaumTeil>();
+			};
+			}
+			else
+			{
+				comp=new Comparator<String>() {
+					@Override
+					public int compare(String o1, String o2) {
+						return -(o1.compareTo(o2));
+					}
+				};
+			}
+		} else {
+			if (struktur.kinder.length==0)
+			{
+				comp=new Comparator<String>() {
+							@Override
+							public int compare(String o1, String o2) {
+								int i=o1.compareTo(o2);
+								return i==0?1:i;
+							}
+						};
+			}
+
+		}
+		kinder = new TreeMap<String, BaumTeil>(comp);
 	}
 
 	@Override
@@ -236,10 +262,9 @@ public class VariablerKnoten<E extends Enum<E> & Ordner> extends Knoten<E> {
 			arr = new BaumTeil[kinder.size()];
 			kinder.values().toArray(arr);
 		}
-		for(BaumTeil kind: arr)
-		{
+		for (BaumTeil kind : arr) {
 			kind.getFileStrings(collector);
 		}
-		
+
 	}
 }
